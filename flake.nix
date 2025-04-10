@@ -1,20 +1,16 @@
 {
-  # A flake to configure both NixOS and Home Manager for joji's machine.
   description = "NixOS flake configuration for joji's machine";
 
   inputs = {
-    # Use the stable release of nixpkgs.
-    nixpkgs.url = "github:nixos/nixpkgs?ref=stable";
+    # Use the latest stable Nixpkgs release (NixOS 24.11)
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-24.11";
 
-    # Use the release channel of home-manager.
-    home-manager.url = "github:nix-community/home-manager?ref=release";
+    # Use the Home Manager branch corresponding to NixOS 24.11
+    home-manager.url = "github:nix-community/home-manager?ref=release-24.11";
   };
 
-  outputs = { self, nixpkgs, home-manager }: let
-    # Define the target system architecture.
+  outputs = { self, nixpkgs, home-manager, ... }: let
     system = "x86_64-linux";
-
-    # Import the package set from nixpkgs for the specified system.
     pkgs = import nixpkgs { inherit system; };
   in {
     # NixOS configuration for the physical machine.
@@ -22,9 +18,9 @@
       system = "x86_64-linux";
       modules = [
         ./hosts/nixos/default.nix   # Host-specific hardware and base configuration.
-        ./modules/base.nix            # Global system options, fonts, and security settings.
+        ./modules/base.nix            # Global system options, fonts, security settings, etc.
         ./modules/desktop/kde.nix     # KDE desktop environment configuration.
-        #./modules/desktop/hyprland.nix     # Hyprland configuration.
+        #./modules/desktop/hyprland.nix  # (Optional) Hyprland configuration.
         ./modules/users/joji.nix      # Configuration for the 'joji' user account.
         ./modules/virtualization.nix  # Virtualization support with libvirt.
         ./modules/gaming.nix          # Gaming packages and AMD GPU tweaks.
@@ -39,7 +35,7 @@
       modules = [ ./home/joji.nix ];
     };
 
-    # Example package export; here exposing the hello package.
+    # Example package export.
     packages.${system}.default = pkgs.hello;
   };
 }
