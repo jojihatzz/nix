@@ -42,7 +42,7 @@ echo "Using root partition: $ROOT_PART and EFI partition: $EFI_PART."
 
 echo "Step 3: Cloning the flake repository..."
 # Change FLAKE_REPO_URL below to your flake repository URL.
-FLAKE_REPO_URL="https://your.repo.url/flake.git"
+FLAKE_REPO_URL="https://github.com/jojihatzz/nix"
 git clone "$FLAKE_REPO_URL" "$MOUNT_POINT/flake"
 
 echo "Step 4: Running nixos-install with flake configuration..."
